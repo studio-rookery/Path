@@ -18,7 +18,7 @@ open class PathObserver: NSObject, NSFilePresenter {
         path.url
     }
     
-    func stop() {
+    public func stop() {
         NSFileCoordinator.removeFilePresenter(self)
     }
     
