@@ -11,6 +11,7 @@ import Foundation
 import Combine
 
 @available(iOS 13.0, *)
+@available(OSX 10.15, *)
 public extension PathObserver {
     
     struct Publisher: Combine.Publisher {
@@ -36,6 +37,7 @@ public extension PathObserver {
 }
 
 @available(iOS 13.0, *)
+@available(OSX 10.15, *)
 private extension PathObserver  {
     
     final class Subscription: Combine.Subscription {
