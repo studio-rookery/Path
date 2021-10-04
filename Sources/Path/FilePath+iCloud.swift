@@ -1,6 +1,6 @@
 import Foundation
 
-public extension Path {
+public extension FilePath {
     
     var isUbiquitousItem: Bool {
         fileManager.isUbiquitousItem(at: url)

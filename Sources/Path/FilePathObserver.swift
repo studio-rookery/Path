@@ -1,17 +1,17 @@
 import Foundation
 
-open class PathObserver: NSObject, NSFilePresenter {
+open class FilePathObserver: NSObject, NSFilePresenter {
     
-    public let path: Path
+    public let path: FilePath
     public let presentedItemOperationQueue: OperationQueue
     
-    open var onChange: ((Path) -> Void)? {
+    open var onChange: ((FilePath) -> Void)? {
         didSet {
             runHandler()
         }
     }
     
-    public init(for path: Path, presentedItemOperationQueue: OperationQueue = .main) {
+    public init(for path: FilePath, presentedItemOperationQueue: OperationQueue = .main) {
         self.path = path
         self.presentedItemOperationQueue = presentedItemOperationQueue
         super.init()
@@ -63,7 +63,7 @@ open class PathObserver: NSObject, NSFilePresenter {
     }
 }
 
-private extension PathObserver {
+private extension FilePathObserver {
     
     func runHandler() {
         onChange?(path)

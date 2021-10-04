@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Path: Hashable, Comparable {
+public struct FilePath: Hashable, Comparable {
     
     public var url: URL
 
@@ -16,18 +16,18 @@ public struct Path: Hashable, Comparable {
         .default
     }
     
-    static public func < (lhs: Path, rhs: Path) -> Bool {
+    static public func < (lhs: FilePath, rhs: FilePath) -> Bool {
         lhs.url.path < rhs.url.path
     }
 }
 
-public extension Path {
+public extension FilePath {
     
-    static let home = Path(url: URL(fileURLWithPath: NSHomeDirectory()))
+    static let home = FilePath(url: URL(fileURLWithPath: NSHomeDirectory()))
     static let documents = home + "Documents"
 }
 
-public extension Path {
+public extension FilePath {
     
     var path: String {
         url.path
@@ -68,20 +68,20 @@ public extension Path {
     }
 }
 
-public extension Path {
+public extension FilePath {
     
-    static func + (lhs: Path, rhs: String) -> Path {
+    static func + (lhs: FilePath, rhs: String) -> FilePath {
         var new = lhs
         new += rhs
         return new
     }
     
-    static func += (lhs: inout Path, rhs: String) {
+    static func += (lhs: inout FilePath, rhs: String) {
         lhs.url.appendPathComponent(rhs)
     }
 }
 
-public extension Path {
+public extension FilePath {
     
     func createDirectory(withIntermediateDirectories createIntermediates: Bool) throws {
         try fileManager.createDirectory(at: url, withIntermediateDirectories: createIntermediates, attributes: nil)
@@ -95,7 +95,7 @@ public extension Path {
     }
 }
 
-public extension Path {
+public extension FilePath {
     
     func removeIfExists() throws {
         guard exists else {
@@ -110,9 +110,9 @@ public extension Path {
     }
 }
 
-public extension Path {
+public extension FilePath {
     
-    func move(to destination: Path, overwrite: Bool, withIntermediateDirectories createIntermediates: Bool) throws {
+    func move(to destination: FilePath, overwrite: Bool, withIntermediateDirectories createIntermediates: Bool) throws {
         if overwrite {
             try destination.removeIfExists()
         }
@@ -124,7 +124,7 @@ public extension Path {
         try fileManager.moveItem(at: url, to: destination.url)
     }
     
-    func copy(to destination: Path, overwrite: Bool, withIntermediateDirectories createIntermediates: Bool) throws {
+    func copy(to destination: FilePath, overwrite: Bool, withIntermediateDirectories createIntermediates: Bool) throws {
         if overwrite {
             try destination.removeIfExists()
         }
@@ -137,45 +137,45 @@ public extension Path {
     }
 }
 
-public extension Path {
+public extension FilePath {
     
-    var parent: Path {
-        Path(url: url.deletingLastPathComponent())
+    var parent: FilePath {
+        FilePath(url: url.deletingLastPathComponent())
     }
 }
 
-public extension Path {
+public extension FilePath {
     
-    func recursiveChildren(options: FileManager.DirectoryEnumerationOptions = []) -> [Path] {
+    func recursiveChildren(options: FileManager.DirectoryEnumerationOptions = []) -> [FilePath] {
         guard let enumrator = fileManager.enumerator(at: url, includingPropertiesForKeys: nil, options: options, errorHandler: nil) else {
             return []
         }
         
-        var paths: [Path] = []
+        var paths: [FilePath] = []
         for case let url as URL in enumrator {
-            let path = Path(url: url)
+            let path = FilePath(url: url)
             paths.append(path)
         }
         
         return paths
     }
     
-    func children(options: FileManager.DirectoryEnumerationOptions = []) -> [Path] {
+    func children(options: FileManager.DirectoryEnumerationOptions = []) -> [FilePath] {
         guard let contents = try? fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: options) else {
             return []
         }
         
-        return contents.map(Path.init)
+        return contents.map(FilePath.init)
     }
 }
 
-public extension Collection where Element == Path {
+public extension Collection where Element == FilePath {
     
-    func filter(withPathExtension pathExtension: String) -> [Path] {
+    func filter(withPathExtension pathExtension: String) -> [FilePath] {
         filter { $0.pathExtension == pathExtension }
     }
     
-    func sortedByCreationDate(ascending: Bool) -> [Path] {
+    func sortedByCreationDate(ascending: Bool) -> [FilePath] {
         sorted { lhs, rhs in
             if ascending {
                 return lhs.createionDate < rhs.createionDate

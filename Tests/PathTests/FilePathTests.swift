@@ -1,9 +1,9 @@
 import XCTest
 @testable import Path
 
-final class PathTests: XCTestCase {
+final class FilePathTests: XCTestCase {
     
-    let fixture = Path(#file).parent + "Fixture"
+    let fixture = FilePath(#file).parent + "Fixture"
     
     override func setUp() {
         super.setUp()

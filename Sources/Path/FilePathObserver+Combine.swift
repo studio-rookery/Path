@@ -12,21 +12,21 @@ import Combine
 
 @available(iOS 13.0, *)
 @available(OSX 10.15, *)
-public extension PathObserver {
+public extension FilePathObserver {
     
     struct Publisher: Combine.Publisher {
         
-        public typealias Output = Path
+        public typealias Output = FilePath
         public typealias Failure = Never
         
-        private let pathObserver: PathObserver
+        private let pathObserver: FilePathObserver
 
-        public init(pathObserver: PathObserver) {
+        public init(pathObserver: FilePathObserver) {
             self.pathObserver = pathObserver
         }
         
-        public init(path: Path) {
-            self.pathObserver = PathObserver(for: path)
+        public init(path: FilePath) {
+            self.pathObserver = FilePathObserver(for: path)
         }
         
         public func receive<S>(subscriber: S) where S : Combine.Subscriber, Failure == S.Failure, Output == S.Input {
@@ -38,13 +38,13 @@ public extension PathObserver {
 
 @available(iOS 13.0, *)
 @available(OSX 10.15, *)
-private extension PathObserver  {
+private extension FilePathObserver  {
     
     final class Subscription: Combine.Subscription {
         
-        private let pathObserver: PathObserver
+        private let pathObserver: FilePathObserver
 
-        init(pathObserver: PathObserver) {
+        init(pathObserver: FilePathObserver) {
             self.pathObserver = pathObserver
         }
 
