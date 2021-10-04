@@ -33,6 +33,10 @@ public extension Path {
         url.path
     }
     
+    var lastPathComponent: String {
+        url.lastPathComponent
+    }
+    
     var pathExtension: String {
         url.pathExtension
     }
