@@ -5,7 +5,11 @@ open class PathObserver: NSObject, NSFilePresenter {
     public let path: Path
     public let presentedItemOperationQueue: OperationQueue
     
-    open var onChange: ((Path) -> Void)?
+    open var onChange: ((Path) -> Void)? {
+        didSet {
+            runHandler()
+        }
+    }
     
     public init(for path: Path, presentedItemOperationQueue: OperationQueue = .main) {
         self.path = path
