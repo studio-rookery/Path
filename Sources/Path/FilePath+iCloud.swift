@@ -1,9 +1,38 @@
 import Foundation
 
+@available(macOS 10.15.0, *)
+@available(iOS 13.0.0, *)
+public extension FilePath {
+    
+    func downloadFromiCloudIfNeeded() async throws {
+        try await withCheckedThrowingContinuation { continuation in
+            startDownloading(continuation.resume(with: ))
+        }
+    }
+}
+
 public extension FilePath {
     
     var isUbiquitousItem: Bool {
         fileManager.isUbiquitousItem(at: url)
+    }
+    
+    var isNonDownloadedUbiquitousItem: Bool {
+        isUbiquitousItem && lastPathComponent.hasPrefix(".") && pathExtension == "icloud"
+    }
+    
+    var deletingNonDownloadedComponents: FilePath {
+        guard isNonDownloadedUbiquitousItem else {
+            return self
+        }
+        let newName = String(
+            url
+                .deletingPathExtension()
+                .lastPathComponent
+                .dropFirst()
+        )
+        
+        return parent + newName
     }
     
     func startDownloading(_ completionHandler: @escaping (Result<Void, Error>) -> Void) {
