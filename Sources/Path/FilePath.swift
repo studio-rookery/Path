@@ -51,7 +51,7 @@ public extension FilePath {
         return isDirectory.boolValue
     }
     
-    func attributeateValue<Value>(forItemAt url: URL, forKey key: FileAttributeKey) -> Value? {
+    func attributeateValue<Value>(forKey key: FileAttributeKey) -> Value? {
         guard let attributes = try? fileManager.attributesOfItem(atPath: url.path), let value = attributes[key] as? Value else {
             return nil
         }
@@ -60,11 +60,11 @@ public extension FilePath {
     }
     
     var modificationDate: Date {
-        attributeateValue(forItemAt: url, forKey: .modificationDate)!
+        attributeateValue(forKey: .modificationDate)!
     }
     
     var createionDate: Date {
-        attributeateValue(forItemAt: url, forKey: .creationDate)!
+        attributeateValue(forKey: .creationDate)!
     }
 }
 
